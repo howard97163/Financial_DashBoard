@@ -491,7 +491,7 @@ function renderMonthlyChart(monthly) {
 
 // ─── Channel chart ──────────────────────────
 function renderChannelChart(txns) {
-  const income = (txns||[]).filter(t=>t.amount>0);
+  const income = (txns||[]).filter(t=>t.amount>0 && t.type==='收入');
   const chMap  = {};
   income.forEach(t=>{
     const ch = normalizeChannel(t.channel || t.category || '其他');
@@ -524,7 +524,7 @@ function renderChannelChart(txns) {
 
 // ─── Product rank ───────────────────────────
 function renderProductRank(txns) {
-  const income = (txns||[]).filter(t=>t.amount>0 && t.description);
+  const income = (txns||[]).filter(t=>t.amount>0 && t.description && t.type==='收入');
   const prodMap = {};
   income.forEach(t=>{
     const name = (t.description||'').split(/[\s,，]/)[0].trim().slice(0,10);
@@ -693,7 +693,7 @@ function destroy(id){
 
 function normalizeChannel(ch) {
   const s = (ch||'').toLowerCase();
-  if (s.includes('直銷')||s.includes('direct')) return '直銷';
+  if (s.includes('直銷')||s.includes('direct')||s.includes('直接')) return '直銷';
   if (s.includes('蝦皮')||s.includes('shopee')) return '蝦皮';
   if (s.includes('7-11')||s.includes('711')) return '7-11';
   if (s.includes('韓')||s.includes('kr')) return '韓國出口';
